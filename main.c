@@ -24,6 +24,7 @@ int testGraph()
 	Graph g = grnouv(3);
 	Graph g2;
         Graph g3;
+        Graph g4;
 	Node * n1;
 	Node * n2;
 	Node * n3;
@@ -66,9 +67,8 @@ int testGraph()
 	g3 = Kruskal(g2);
 	pgraph(g3);
 	resetTag(&g2);
-	g3 = Prim(&g2);
-	printf("size of res %d\n",g3.size);
-	pgraph(g3);
+	g4 = Prim(&g2);
+	pgraph(g4);
 	resetTag(&g2);
 	return 0;
 }

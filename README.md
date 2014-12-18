@@ -10,4 +10,8 @@ struct Graph used :
  	-Adjacence Matrix
   
 Sort Algorithme used :
- 	//TODO
+ 	
+        -HeapSort
+        -CountingSort
+        -InsertionSort
+        -BogoSort (planned)
