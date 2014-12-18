@@ -54,7 +54,7 @@ void resetTag(Graph * g)
         g->Nodes[i]->tag = 0;
 }
 
-Graph Kruskal(Graph g)
+Graph Kruskal(Graph g,int sort)
 {
     int Nodeadded = 0;
     int i, ens1, ens2;
@@ -62,9 +62,16 @@ Graph Kruskal(Graph g)
     Graph res = grnouv(g.size);
     Edge * edges = createEdgeList();
     edges = getEdgeList(g); 
-    //TODO tri de la liste
     Node * n1;
     Node * n2;
+
+    //TODO
+    if(sort == 1)
+        printf("heap\n");//edges = heap(edges);
+    else if(sort == 2)
+        printf("counting\n");//edges = counting(edges);
+    else
+        printf("insert\n");//edges = insertion(edges);
     
     while(Nodeadded < g.size && edges != NULL)
     {
@@ -122,7 +129,7 @@ Graph Kruskal(Graph g)
     return res;
 }
 
-Graph Prim(Graph * g) //FIXME graphe de test avec list d'adjacence : |a| -> b -> b ?? problème à l'afficjage seulement
+Graph Prim(Graph * g, int sort) //FIXME graphe de test avec list d'adjacence : |a| -> b -> b ?? problème à l'afficjage seulement
 {
     Graph res = grnouv(g->size);
     adjs(&res, g->Nodes[0]);
@@ -135,13 +142,19 @@ Graph Prim(Graph * g) //FIXME graphe de test avec list d'adjacence : |a| -> b ->
     while(Nodeadded < g->size)
     {
         edges = getNeighboors(g);
-        //TODO liste à trier
+        //TODO
+        if(sort == 1)
+            printf("heap\n");//edges = heap(edges);
+        else if(sort == 2)
+            printf("counting\n");//edges = counting(edges);
+        else
+            printf("insert\n");//edges = insertion(edges);
+
         n1 = getnode(res, edges->from->name);
         n2 = nnouv(edges->to->name);
         edges->to->tag = 1; //on marque le noeud ajouté
         adjs(&res, n2);
         adja(&res, n1, n2, edges->weight);
-        printf("Ajout de l'arrete : %c ----- %c\n", n1->name, n2->name);
         Nodeadded++;
     }
 

@@ -1,8 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/stat.h> 
 
 #include "generic.h"
 #include "Edge.h"
+
+#define NBGRAPHTEST 10
 
 #ifdef GMATRICE
 	#include "Node_Matrix.h"
@@ -11,7 +14,6 @@
 	#include "Node_list.h"
 	#include "graph_list.h"
 #endif
-
 
 /* union set pour kruskal */
 /* afficher complexité, pseudo code prim/kruskal/tri */
@@ -64,10 +66,10 @@ int testGraph()
 	printf("\nGraphe lu depuis le fichier ./graphFile/test.mygraph : \n");
 	g2 = ReadFromfile("./graphFile/test.mygraph");
 	pgraph(g2);
-	g3 = Kruskal(g2);
+	g3 = Kruskal(g2,1);
 	pgraph(g3);
 	resetTag(&g2);
-	g4 = Prim(&g2);
+	g4 = Prim(&g2,1);
 	pgraph(g4);
 	resetTag(&g2);
 	return 0;
@@ -81,18 +83,64 @@ void error_choose()
 	printf("\"make Matrix\" => matrice d'adjacence\n");
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+	if (argc != 3) 
+	{
+		printf("================================================= \n");
+		printf("usage : %s <numSort> <nomfichier.mygraph>\n", argv[0]);
+		printf("correspondance des numSort : \n");
+		printf("Heap sort      -> 1 \n");
+		printf("Counting sort  -> 2 \n");
+		printf("Insertion sort -> 3 \n");
+		printf("================================================= \n");
+		exit(1);
+	}
 
-	#if defined(GMATRICE)
-		printf("matrice\n");
-                testGraph();
-	#elif defined(GLISTE) 
-		printf("liste\n");
-                testGraph();
-	#else
-		error_choose(); //non atteignable si le makefile est utilisé.
-	#endif
+	int i, sort;
+	Graph * gtab = malloc(sizeof(Graph) * NBGRAPHTEST);
+	sort = atoi(argv[1]);
+	if(sort < 1 || sort > 3)
+	{
+		printf("Algorithme de tri non reconnu (1-3)\n");
+		exit(1);
+	}
+
+	struct stat s;
+	if(stat(argv[2], &s) != 0)
+	{
+		printf("Fichier introuvable\n");
+		exit(1);
+	}
+
+	for(i = 0; i < NBGRAPHTEST; i++)
+		gtab[i] = ReadFromfile(argv[2]);
+
+	printf("Execution de Prim : \n");
+
+	for(i = 0; i < NBGRAPHTEST; i++)
+	{
+		printf("Graph %d : ", i);
+		//debut mesure
+		Prim(&gtab[i], sort);
+		//fin mesure
+		//print mesure
+	}
+
+	//on remet tout les tags à 0
+	for(i = 0; i < NBGRAPHTEST; i++)
+		resetTag(&gtab[i]);
+
+
+	printf("Execution de Kruskal : \n");
+
+	for(i = 0; i < NBGRAPHTEST; i++)
+	{
+		//debut mesure
+		Kruskal(gtab[i], sort);
+		//fin mesure
+		//print mesure
+	}
 
 	return 0;
 }

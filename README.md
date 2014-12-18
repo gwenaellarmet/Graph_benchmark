@@ -7,11 +7,11 @@ Compare Prim and Kruskal algorithme with different type of structure for the Gra
 struct Graph used : 
 
 	-Adjacence List
- 	-Adjacence Matrix
+	-Adjacence Matrix
   
 Sort Algorithme used :
  	
-        -HeapSort
-        -CountingSort
-        -InsertionSort
-        -BogoSort (planned)
+	-HeapSort
+	-CountingSort
+	-InsertionSort
+	-BogoSort (planned)
